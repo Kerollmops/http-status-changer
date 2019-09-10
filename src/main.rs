@@ -1,4 +1,5 @@
 use std::sync::atomic::{AtomicU16, Ordering::Relaxed};
+use std::env;
 use tide::{Body, Context};
 use tide::http::{Response, StatusCode};
 
@@ -29,5 +30,6 @@ fn main() -> Result<(), std::io::Error> {
         cx.state().health_status.store(status, Relaxed);
     });
 
-    app.run("127.0.0.1:8000")
+    let addr = env::args().nth(1).unwrap_or("127.0.0.1:8000".into());
+    app.run(addr)
 }
